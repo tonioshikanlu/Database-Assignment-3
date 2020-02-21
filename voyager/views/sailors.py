@@ -10,8 +10,12 @@ from voyager.validate import validate_field, render_errors
 from voyager.validate import NAME_RE, INT_RE, DATE_RE
 
 
-def views(bp):
+def Sailors(conn):
+    return execute(conn, "SELECT s.sid, s.age, s.name, s.experience FROM Sailors AS s")
 
+def views(bp):
     @bp.route("/sailors")
     def _get_all_sailors():
-        return 'not implemented'
+        with get_db() as conn:
+            rows = Sailors(conn)
+        return render_template("table.html", name="sailors", rows=rows)
